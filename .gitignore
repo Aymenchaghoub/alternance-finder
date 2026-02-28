@@ -1,0 +1,17 @@
+# Environnement virtuel
+.venv/
+
+# Fichiers générés par les scripts
+emails.txt
+entreprises_emails.txt
+toutes_entreprises.txt
+envoi_log.csv
+envoi_log_dryrun.csv
+
+# Credentials / tokens
+token.json
+credentials.json
+
+# Python
+__pycache__/
+*.pyc
