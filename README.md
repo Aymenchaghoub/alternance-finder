@@ -111,3 +111,29 @@ Recherche-stage/
 - **Gmail limite à ~500 mails/jour** pour les comptes gratuits. Avec 391 entreprises et 8s de délai, l'envoi prend environ **52 minutes**.
 - Le mot de passe d'application est différent du mot de passe Gmail normal. Pour en générer un : Compte Google → Sécurité → Validation en 2 étapes → Mots de passe des applications.
 - Pour modifier le contenu du mail, édite la fonction `make_email_body()` dans `send-emails-script.py`.
+
+---
+
+## Copier-coller : du clone à l'envoi
+
+```powershell
+# 1. Cloner le repo
+git clone https://github.com/Aymenchaghoub/Recherche-stage.git
+cd Recherche-stage
+
+# 2. Créer et activer l'environnement virtuel
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# 3. Installer les dépendances
+pip install requests
+
+# 4. Créer le fichier .env avec le mot de passe d'application Gmail
+echo "xxxx xxxx xxxx xxxx" > .env
+
+# 5. Scraper les emails des entreprises
+python emails-script.py
+
+# 6. Envoyer les candidatures (~52 min pour 391 mails)
+python send-emails-script.py
+```
