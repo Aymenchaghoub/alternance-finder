@@ -9,6 +9,7 @@ envoi_log.csv
 envoi_log_dryrun.csv
 
 # Credentials / tokens
+.env
 token.json
 credentials.json
 

@@ -51,16 +51,10 @@ Ce script interroge l'API d'Euratechnologies et génère 3 fichiers :
 
 ### Configuration
 
-Avant de lancer le script, définis la variable d'environnement avec ton mot de passe d'application Gmail :
+Crée un fichier `.env` à la racine du projet avec ton mot de passe d'application Gmail (une seule ligne) :
 
-```powershell
-$env:GMAIL_APP_PASSWORD = "xxxx xxxx xxxx xxxx"
 ```
-
-Si besoin, tu peux aussi changer l'adresse d'expédition :
-
-```powershell
-$env:GMAIL_FROM = "ton.email@gmail.com"
+xxxx xxxx xxxx xxxx
 ```
 
 Vérifie aussi le chemin du CV dans le script :

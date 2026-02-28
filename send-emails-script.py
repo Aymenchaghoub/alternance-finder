@@ -29,8 +29,8 @@ DRY_RUN = False  # False = envoi réel
 # --- Compte Gmail ---
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-EMAIL_FROM = os.environ.get("GMAIL_FROM", "ensm.chaghoub.aymen@gmail.com")
-EMAIL_PASSWORD = os.environ["GMAIL_APP_PASSWORD"]  # Définir avant de lancer : $env:GMAIL_APP_PASSWORD = "xxxx xxxx xxxx xxxx"
+EMAIL_FROM = "ensm.chaghoub.aymen@gmail.com"
+EMAIL_PASSWORD = open(os.path.join(os.path.dirname(__file__), ".env")).read().strip()  # Mot de passe dans .env (1 ligne)
 
 # --- CV en pièce jointe ---
 CV_PATH = r"C:\Users\Aymen\Desktop\Recherche-stage\CV-Aymen-CHAGHOUB-stage_compressed.pdf"
