@@ -42,6 +42,9 @@ ENTREPRISES_FILE = "entreprises_emails.txt"
 # --- Délai entre chaque mail (en secondes) ---
 DELAY_BETWEEN_EMAILS = 8  # 8s pour éviter le rate-limiting Gmail
 
+# --- Limite quotidienne (Gmail gratuit = 500/jour, on garde une marge) ---
+DAILY_LIMIT = 480
+
 # --- Fichier de log ---
 LOG_FILE = "envoi_log.csv"
 
@@ -140,6 +143,20 @@ def load_already_sent(log_file: str) -> set:
     return sent
 
 
+def count_sent_today(log_file: str) -> int:
+    """Compte le nombre de mails envoyés avec succès aujourd'hui."""
+    today = datetime.now().strftime("%Y-%m-%d")
+    count = 0
+    if os.path.exists(log_file):
+        with open(log_file, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            next(reader, None)
+            for row in reader:
+                if len(row) >= 3 and row[2] == "OK" and row[0].startswith(today):
+                    count += 1
+    return count
+
+
 def log_result(log_file: str, email: str, status: str, company: str):
     """Ajoute une ligne au fichier de log."""
     file_exists = os.path.exists(log_file)
@@ -198,10 +215,19 @@ def main():
     # Filtrer celles déjà contactées
     already_sent = load_already_sent(LOG_FILE)
     to_send = [c for c in companies if c["email"] not in already_sent]
-    print(f"{len(already_sent)} déjà envoyés, {len(to_send)} restants\n")
+    print(f"{len(already_sent)} déjà envoyés, {len(to_send)} restants")
+
+    # Vérifier la limite quotidienne
+    sent_today = count_sent_today(LOG_FILE)
+    remaining_today = max(0, DAILY_LIMIT - sent_today)
+    print(f"{sent_today} envoyés aujourd'hui, limite = {DAILY_LIMIT}, reste = {remaining_today}\n")
 
     if not to_send:
         print("Rien à envoyer !")
+        return
+
+    if remaining_today == 0:
+        print(f"Limite quotidienne atteinte ({DAILY_LIMIT}). Relance demain !")
         return
 
     # Connexion SMTP
@@ -215,6 +241,12 @@ def main():
     error_count = 0
 
     for i, company in enumerate(to_send, 1):
+        # Vérifier la limite quotidienne
+        if sent_count + sent_today >= DAILY_LIMIT:
+            print(f"\n⚠ Limite quotidienne atteinte ({DAILY_LIMIT} mails).")
+            print(f"  Relance le script demain pour envoyer les {len(to_send) - i + 1} restants.")
+            break
+
         email = company["email"]
         name = company["name"]
 

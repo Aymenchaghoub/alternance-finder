@@ -1,8 +1,9 @@
 # Recherche de Stage – Envoi automatisé de candidatures
 
-Deux scripts Python pour :
-1. **Scraper** les emails des entreprises d'Euratechnologies
-2. **Envoyer** des candidatures spontanées personnalisées à chacune
+Trois scripts Python pour :
+1. **Scraper** les emails des entreprises d’Euratechnologies via l’API
+2. **Enrichir** la liste en scrapant les sites web des entreprises sans email
+3. **Envoyer** des candidatures spontanées personnalisées à chacune
 
 ---
 
@@ -26,12 +27,12 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 
 # 4. Installer les dépendances
-pip install requests
+pip install requests beautifulsoup4
 ```
 
 ---
 
-## Étape 1 – Scraper les emails
+## Étape 1 – Scraper les emails (API)
 
 ```powershell
 python emails-script.py
@@ -47,7 +48,24 @@ Ce script interroge l'API d'Euratechnologies et génère 3 fichiers :
 
 ---
 
-## Étape 2 – Envoyer les candidatures
+## Étape 2 – Trouver les emails manquants (scraping web)
+
+```powershell
+python find-missing-emails.py
+```
+
+Ce script parcourt les sites web des ~800 entreprises qui ont un site mais pas d’email, et extrait les emails depuis :
+- La **homepage**
+- Les pages **/contact**, **/contactez-nous**, **/nous-contacter**, **/about**, **/a-propos**
+- Les liens **mailto:**
+
+Il génère un log `found_emails_log.csv` et met à jour automatiquement `entreprises_emails.txt` et `emails.txt`.
+
+**Résumé support** : si le script est interrompu, il reprend là où il s’était arrêté.
+
+---
+
+## Étape 3 – Envoyer les candidatures
 
 ### Configuration
 
@@ -72,9 +90,12 @@ python send-emails-script.py
 Le script va :
 - Charger la liste depuis `entreprises_emails.txt`
 - Ignorer les entreprises déjà contactées (grâce à `envoi_log.csv`)
+- **Respecter la limite de 450 mails/jour** (Gmail autorise 500, marge de sécurité)
 - Envoyer un mail personnalisé avec le CV en pièce jointe à chaque entreprise
 - Attendre 8 secondes entre chaque envoi (anti rate-limiting)
 - Se reconnecter automatiquement en cas de coupure
+
+Si la limite quotidienne est atteinte, le script s’arrête proprement. **Relance-le le lendemain** pour envoyer le reste.
 
 ### Suivi
 
@@ -94,13 +115,15 @@ timestamp,email,status,company
 ```
 Recherche-stage/
 ├── .venv/                              # Environnement virtuel Python
-├── emails-script.py                    # Script de scraping des emails
-├── send-emails-script.py               # Script d'envoi des candidatures
+├── emails-script.py                    # Script 1 : scraping API Euratechnologies
+├── find-missing-emails.py              # Script 2 : scraping sites web (emails manquants)
+├── send-emails-script.py               # Script 3 : envoi des candidatures
 ├── CV-Aymen-CHAGHOUB-stage_compressed.pdf  # CV en pièce jointe
-├── emails.txt                          # Emails extraits
-├── entreprises_emails.txt              # Entreprises avec email
-├── toutes_entreprises.txt              # Toutes les entreprises
+├── emails.txt                          # Emails extraits (~650)
+├── entreprises_emails.txt              # Entreprises avec email (~1150)
+├── toutes_entreprises.txt              # Toutes les entreprises (1934)
 ├── envoi_log.csv                       # Log des envois (généré automatiquement)
+├── found_emails_log.csv                # Log du scraping web (généré automatiquement)
 └── README.md                           # Ce fichier
 ```
 
@@ -108,7 +131,8 @@ Recherche-stage/
 
 ## Notes importantes
 
-- **Gmail limite à ~500 mails/jour** pour les comptes gratuits. Avec 391 entreprises et 8s de délai, l'envoi prend environ **52 minutes**.
+- **Gmail limite à 500 mails/jour** pour les comptes gratuits. Le script s’arrête automatiquement à 450 (marge de sécurité). Avec ~650 emails, il faut **2 jours** (relancer le lendemain).
+- Avec 8s de délai, chaque tranche de 450 prend environ **1 heure**.
 - Le mot de passe d'application est différent du mot de passe Gmail normal. Pour en générer un : Compte Google → Sécurité → Validation en 2 étapes → Mots de passe des applications.
 - Pour modifier le contenu du mail, édite la fonction `make_email_body()` dans `send-emails-script.py`.
 
@@ -126,14 +150,15 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 
 # 3. Installer les dépendances
-pip install requests
+pip install requests beautifulsoup4
 
-# 4. Créer le fichier .env avec le mot de passe d'application Gmail
-echo "xxxx xxxx xxxx xxxx" > .env
 
-# 5. Scraper les emails des entreprises
+# 4. Scraper les emails des entreprises (API)
 python emails-script.py
 
-# 6. Envoyer les candidatures (~52 min pour 391 mails)
+# 5. Trouver les emails manquants (sites web)
+python find-missing-emails.py
+
+# 6. Envoyer les candidatures (450/jour max, relancer le lendemain)
 python send-emails-script.py
 ```
