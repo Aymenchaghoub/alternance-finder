@@ -5,6 +5,7 @@ Se connecte à Gmail via IMAP, récupère les bounces (mail not found)
 depuis les messages archivés, puis génère un fichier de suivi avec
 le statut de chaque entreprise :
 
+  ✉ Répondu       — l'entreprise a répondu
   ✓ Envoyé        — mail envoyé et pas de bounce
   ✗ Non trouvé    — bounce reçu (adresse invalide)
   ⏳ En attente    — pas encore envoyé
@@ -84,43 +85,40 @@ def load_sent_emails(log_file: str) -> dict:
 # 3. RÉCUPÉRER LES BOUNCES DEPUIS GMAIL (IMAP)
 # ============================================================
 
-def fetch_bounced_emails() -> set:
-    """
-    Se connecte à Gmail IMAP, cherche les notifications de bounce
-    (mailer-daemon) dans tous les messages y compris archivés,
-    et extrait les adresses email qui ont bouncé.
-    """
-    bounced = set()
-
+def connect_imap():
+    """Ouvre une connexion IMAP à Gmail et sélectionne 'All Mail'."""
     print("Connexion IMAP à Gmail...")
     mail = imaplib.IMAP4_SSL(IMAP_SERVER, IMAP_PORT)
     mail.login(EMAIL_ACCOUNT, EMAIL_PASSWORD)
     print("Connecté !")
 
-    # "[Gmail]/Tous les messages" inclut les archivés
-    # Le nom du dossier dépend de la langue du compte Gmail
     all_mail_folders = [
         '"[Gmail]/Tous les messages"',   # FR
         '"[Gmail]/All Mail"',            # EN
         '"[Gmail]/Alle Nachrichten"',    # DE
     ]
 
-    folder_ok = False
     for folder in all_mail_folders:
         status, _ = mail.select(folder, readonly=True)
         if status == "OK":
-            folder_ok = True
             print(f"  Dossier : {folder}")
-            break
+            return mail
 
-    if not folder_ok:
-        # Fallback: lister les dossiers disponibles
-        print("  Dossiers disponibles :")
-        status, folders = mail.list()
-        for f in folders:
-            print(f"    {f.decode()}")
-        mail.logout()
-        return bounced
+    # Fallback
+    print("  Dossiers disponibles :")
+    status, folders = mail.list()
+    for f in folders:
+        print(f"    {f.decode()}")
+    mail.logout()
+    return None
+
+
+def fetch_bounced_emails(mail) -> set:
+    """
+    Cherche les notifications de bounce (mailer-daemon) dans Gmail
+    et extrait les adresses email qui ont bouncé.
+    """
+    bounced = set()
 
     # Chercher les messages de mailer-daemon (bounces)
     print("  Recherche des bounces (mailer-daemon)...")
@@ -216,17 +214,107 @@ def fetch_bounced_emails() -> set:
             pass
 
     print(f"  {len(bounced)} adresses bouncées extraites")
-    mail.logout()
     return bounced
+
+
+# ============================================================
+# 4. RÉCUPÉRER LES RÉPONSES DEPUIS GMAIL (IMAP)
+# ============================================================
+
+def fetch_replies(mail, company_emails: set) -> dict:
+    """
+    Cherche les emails reçus (pas envoyés par nous) dont l'expéditeur
+    correspond à une adresse d'entreprise. Retourne {email: subject}.
+    """
+    replies = {}
+    email_re = re.compile(r'[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}')
+
+    # Chercher tous les emails reçus (TO = notre adresse)
+    print("  Recherche des réponses reçues...")
+    status, data = mail.search(None, f'(TO "{EMAIL_ACCOUNT}")')
+    if status != "OK" or not data[0]:
+        print("  0 réponses trouvées")
+        return replies
+
+    msg_ids = data[0].split()
+    print(f"  {len(msg_ids)} messages reçus à analyser...")
+
+    # On extrait uniquement les headers (rapide) pour identifier l'expéditeur
+    processed = 0
+    for msg_id in msg_ids:
+        try:
+            status, msg_data = mail.fetch(msg_id, "(BODY[HEADER.FIELDS (FROM SUBJECT DATE)])")
+            if status != "OK":
+                continue
+
+            raw_header = msg_data[0][1]
+            msg = email.message_from_bytes(raw_header)
+
+            # Extraire l'adresse FROM
+            from_raw = msg.get("From", "")
+            from_matches = email_re.findall(from_raw)
+            if not from_matches:
+                continue
+
+            sender = from_matches[0].lower()
+
+            # Ignorer les mails système
+            if sender.startswith(("mailer-daemon@", "postmaster@", "noreply@", "no-reply@")):
+                continue
+            if sender == EMAIL_ACCOUNT.lower():
+                continue
+
+            # Vérifier si l'expéditeur est une entreprise connue
+            # On vérifie l'email exact ET le domaine (parfois la réponse
+            # vient d'une autre adresse du même domaine)
+            sender_domain = sender.split("@")[1] if "@" in sender else ""
+            company_domains = {e.split("@")[1] for e in company_emails if "@" in e}
+
+            matched_email = None
+            if sender in company_emails:
+                matched_email = sender
+            elif sender_domain in company_domains:
+                # Trouver l'email d'entreprise correspondant au domaine
+                for ce in company_emails:
+                    if ce.split("@")[1] == sender_domain:
+                        matched_email = ce
+                        break
+
+            if matched_email:
+                # Décoder le sujet
+                subject_raw = msg.get("Subject", "(sans objet)")
+                try:
+                    decoded_parts = decode_header(subject_raw)
+                    subject = ""
+                    for part, charset in decoded_parts:
+                        if isinstance(part, bytes):
+                            subject += part.decode(charset or "utf-8", errors="replace")
+                        else:
+                            subject += part
+                except Exception:
+                    subject = subject_raw
+
+                replies[matched_email] = subject.strip()[:80]
+
+            processed += 1
+            if processed % 100 == 0:
+                print(f"  ... {processed}/{len(msg_ids)} analysés")
+
+        except Exception:
+            pass
+
+    print(f"  {len(replies)} réponses d'entreprises détectées")
+    return replies
 
 
 # ============================================================
 # 4. GÉNÉRER LE FICHIER DE SUIVI
 # ============================================================
 
-def generate_report(companies, sent_log, bounced):
+def generate_report(companies, sent_log, bounced, replies):
     """Génère suivi_envois.txt avec le statut de chaque entreprise."""
 
+    count_replied = 0
     count_ok = 0
     count_bounce = 0
     count_err = 0
@@ -238,7 +326,11 @@ def generate_report(companies, sent_log, bounced):
         em_lower = em.lower()
         name = c["name"]
 
-        if em_lower in bounced:
+        # Priorité : Répondu > Non trouvé > Envoyé > Erreur > En attente
+        if em_lower in replies:
+            status = "✉ Répondu"
+            count_replied += 1
+        elif em_lower in bounced:
             status = "✗ Non trouvé"
             count_bounce += 1
         elif em_lower in sent_log:
@@ -259,6 +351,7 @@ def generate_report(companies, sent_log, bounced):
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write(f"SUIVI DES ENVOIS DE CANDIDATURES — {now}\n")
         f.write("=" * 110 + "\n\n")
+        f.write(f"  ✉ Répondu     : {count_replied}\n")
         f.write(f"  ✓ Envoyé      : {count_ok}\n")
         f.write(f"  ✗ Non trouvé  : {count_bounce}\n")
         f.write(f"  ✗ Erreur      : {count_err}\n")
@@ -276,8 +369,9 @@ def generate_report(companies, sent_log, bounced):
         writer = csv.writer(f, delimiter=";")
         writer.writerow(["Entreprise", "Email", "Statut"])
         for name, em, status in lines:
-            # Statut simplifié pour CSV
-            if "Envoyé" in status:
+            if "Répondu" in status:
+                s = "Répondu"
+            elif "Envoyé" in status:
                 s = "Envoyé"
             elif "Non trouvé" in status:
                 s = "Non trouvé"
@@ -287,7 +381,7 @@ def generate_report(companies, sent_log, bounced):
                 s = "En attente"
             writer.writerow([name, em, s])
 
-    return count_ok, count_bounce, count_err, count_pending, csv_file
+    return count_replied, count_ok, count_bounce, count_err, count_pending, csv_file
 
 
 # ============================================================
@@ -307,25 +401,44 @@ def main():
     sent_log = load_sent_emails(LOG_FILE)
     print(f"{len(sent_log)} emails dans le log d'envoi")
 
-    # 3. Récupérer les bounces depuis Gmail
+    # 3. Connexion IMAP
     print()
-    bounced = fetch_bounced_emails()
+    mail = connect_imap()
+    if not mail:
+        print("ERREUR : impossible de se connecter à Gmail IMAP")
+        return
 
+    # 4. Récupérer les bounces
+    bounced = fetch_bounced_emails(mail)
     if bounced:
         print("\n  Adresses bouncées :")
         for b in sorted(bounced):
             print(f"    - {b}")
 
-    # 4. Générer le rapport
+    # 5. Récupérer les réponses d'entreprises
+    print()
+    company_emails = {c["email"].lower() for c in companies}
+    replies = fetch_replies(mail, company_emails)
+    if replies:
+        print("\n  Réponses reçues :")
+        for em, subj in sorted(replies.items()):
+            print(f"    ✉ {em} — {subj}")
+
+    mail.logout()
+
+    # 6. Générer le rapport
     print(f"\nGénération du rapport...")
-    ok, bounce, err, pending, csv_file = generate_report(companies, sent_log, bounced)
+    replied, ok, bounce, err, pending, csv_file = generate_report(
+        companies, sent_log, bounced, replies
+    )
 
     print(f"\n{'=' * 60}")
+    print(f"  ✉ Répondu     : {replied}")
     print(f"  ✓ Envoyé      : {ok}")
     print(f"  ✗ Non trouvé  : {bounce}")
     print(f"  ✗ Erreur      : {err}")
     print(f"  ⏳ En attente  : {pending}")
-    print(f"  Total         : {ok + bounce + err + pending}")
+    print(f"  Total         : {replied + ok + bounce + err + pending}")
     print(f"\n  Fichiers générés :")
     print(f"    → {OUTPUT_FILE}")
     print(f"    → {csv_file}")
