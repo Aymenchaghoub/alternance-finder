@@ -33,7 +33,7 @@ EMAIL_FROM = "ensm.chaghoub.aymen@gmail.com"
 EMAIL_PASSWORD = open(os.path.join(os.path.dirname(__file__), ".env")).read().strip()  # Mot de passe dans .env (1 ligne)
 
 # --- CV en pièce jointe ---
-CV_PATH = r"C:\Users\Aymen\Desktop\Recherche-stage\CV-Aymen-CHAGHOUB-stage_compressed.pdf"
+CV_PATH = r"C:\Users\Aymen\Desktop\Recherche-stage\CV-Aymen-CHAGHOUB-stage.pdf"
 CV_FILENAME = "CV-Aymen-CHAGHOUB.pdf"  # nom affiché dans le mail
 
 # --- Fichier source des entreprises ---
@@ -98,8 +98,9 @@ GitHub : github.com/Aymenchaghoub"""
 # ============================================================
 
 def load_companies(filepath: str) -> list[dict]:
-    """Lit le fichier entreprises_emails.txt et retourne une liste de dicts."""
+    """Lit le fichier entreprises_emails.txt et retourne une liste de dicts (dédupliqué par email)."""
     companies = []
+    seen_emails = set()
     with open(filepath, "r", encoding="utf-8") as f:
         lines = f.readlines()
 
@@ -115,13 +116,16 @@ def load_companies(filepath: str) -> list[dict]:
         phone = line[90:110].strip()
         website = line[110:].strip()
 
-        if email and "@" in email:
-            companies.append({
-                "name": name,
-                "email": email,
-                "phone": phone,
-                "website": website,
-            })
+        if email and "@" in email and " " not in email:
+            key = email.lower()
+            if key not in seen_emails:
+                seen_emails.add(key)
+                companies.append({
+                    "name": name,
+                    "email": email,
+                    "phone": phone,
+                    "website": website,
+                })
 
     return companies
 
