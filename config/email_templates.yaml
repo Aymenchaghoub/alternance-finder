@@ -1,0 +1,162 @@
+---
+# ============================================================
+# alternance-finder — Templates email
+# ============================================================
+
+# Informations candidat (injectées dans tous les emails)
+candidate:
+  name: "Aymen CHAGHOUB"
+  phone: "+33 7 58 26 37 06"
+  email: "ensm.chaghoub.aymen@gmail.com"
+  linkedin: "https://www.linkedin.com/in/aymen-chaghoub/"
+  github: "https://github.com/Aymenchaghoub"
+
+# Sujet par défaut
+default_subject: "Candidature spontanée – Alternance développement / IA – Aymen CHAGHOUB"
+
+# Signature commune
+signature: |
+  Bien cordialement,
+
+  Aymen CHAGHOUB
+  +33 7 58 26 37 06
+  ensm.chaghoub.aymen@gmail.com
+  LinkedIn : https://www.linkedin.com/in/aymen-chaghoub/
+  GitHub : https://github.com/Aymenchaghoub
+
+# Footer d'opposition (RGPD)
+opt_out_footer: |
+  ---
+  Si mon profil ne correspond pas à vos besoins actuels, n'hésitez pas à me le signaler et je ne vous recontacterai pas.
+
+# Templates par type d'entreprise
+templates:
+  startup_ia:
+    name: "Startup IA"
+    subject: "Candidature spontanée – Alternance développement / IA – Aymen CHAGHOUB"
+    body: |
+      Bonjour {greeting},
+
+      Je me permets de vous contacter car {company_name} évolue dans un domaine qui me passionne : l'intelligence artificielle appliquée.
+
+      Je suis actuellement en stage chez Ouidou Nord, où je contribue au développement d'une plateforme SaaS multi-tenant en production. Je recherche une alternance de 24 mois à partir de septembre 2026, idéalement sur des missions mêlant développement logiciel, backend, automatisation, IA ou systèmes intelligents.
+
+      Votre approche en IA m'intéresse particulièrement car {personalization_angle}.
+
+      Je peux notamment apporter une expérience concrète sur mon projet Assistant RAG ArXiv (pipeline RAG complet avec LangChain, ChromaDB, Mistral-7B, FastAPI) et MediBrief (SaaS IA multi-tenant avec OpenAI API, streaming SSE, Redis).
+
+      Je serais ravi d'échanger si une opportunité actuelle ou à venir peut correspondre à mon profil. Je vous joins mon CV.
+
+  saas_b2b:
+    name: "SaaS B2B"
+    subject: "Candidature spontanée – Alternance développement SaaS – Aymen CHAGHOUB"
+    body: |
+      Bonjour {greeting},
+
+      Je me permets de vous contacter car {company_name} développe une solution SaaS qui correspond exactement au type de produit sur lequel j'aime travailler.
+
+      Je suis actuellement en stage chez Ouidou Nord, où je contribue au développement d'une plateforme SaaS multi-tenant en production (React.js, Java Spring Boot, PostgreSQL, RBAC). Je recherche une alternance de 24 mois à partir de septembre 2026.
+
+      Votre contexte m'intéresse particulièrement car {personalization_angle}.
+
+      Je peux notamment apporter une expérience concrète sur MediBrief, un SaaS IA multi-tenant que j'ai conçu from scratch (Node.js, TypeScript, Next.js, PostgreSQL, Prisma, Redis, BullMQ, OpenAI API, Docker, CI/CD).
+
+      Je serais ravi d'échanger si une opportunité actuelle ou à venir peut correspondre à mon profil. Je vous joins mon CV.
+
+  esn_cabinet:
+    name: "ESN / Cabinet tech"
+    subject: "Candidature spontanée – Alternance développement logiciel – Aymen CHAGHOUB"
+    body: |
+      Bonjour {greeting},
+
+      Je me permets de vous contacter car {company_name} intervient sur des projets variés qui correspondent à ma polyvalence technique.
+
+      Je suis actuellement en stage chez Ouidou Nord, où je contribue au développement d'une plateforme SaaS multi-tenant en production. Je recherche une alternance de 24 mois à partir de septembre 2026, sur des missions mêlant développement logiciel, backend ou fullstack.
+
+      Votre contexte m'intéresse particulièrement car {personalization_angle}.
+
+      Je peux apporter une expérience concrète en développement fullstack (React.js, Java Spring Boot, Node.js, Laravel), en IA (RAG, LLM, PyTorch) et en DevOps (Docker, CI/CD, Git).
+
+      Je serais ravi d'échanger si une opportunité actuelle ou à venir peut correspondre à mon profil. Je vous joins mon CV.
+
+  editeur_logiciel:
+    name: "Éditeur logiciel"
+    subject: "Candidature spontanée – Alternance développement logiciel – Aymen CHAGHOUB"
+    body: |
+      Bonjour {greeting},
+
+      Je me permets de vous contacter car {company_name} développe un produit logiciel qui m'intéresse par sa dimension technique.
+
+      Je suis actuellement en stage chez Ouidou Nord, où je contribue au développement d'une plateforme SaaS multi-tenant en production. Je recherche une alternance de 24 mois à partir de septembre 2026.
+
+      Votre contexte m'intéresse particulièrement car {personalization_angle}.
+
+      Je peux notamment apporter une expérience concrète sur SchoolSphere (application MVC multi-rôles, Laravel, API REST, RBAC) et MediBrief (SaaS IA, Node.js, TypeScript, PostgreSQL).
+
+      Je serais ravi d'échanger si une opportunité actuelle ou à venir peut correspondre à mon profil. Je vous joins mon CV.
+
+  with_offer:
+    name: "Entreprise avec offre alternance"
+    subject: "Candidature – Alternance {job_title} – Aymen CHAGHOUB"
+    body: |
+      Bonjour {greeting},
+
+      J'ai vu que {company_name} propose actuellement une alternance en {job_title}, et ce poste correspond précisément à mon profil et à mes ambitions.
+
+      Je suis actuellement en stage chez Ouidou Nord, où je contribue au développement d'une plateforme SaaS multi-tenant en production. Je recherche une alternance de 24 mois à partir de septembre 2026.
+
+      Cette offre m'intéresse particulièrement car {personalization_angle}.
+
+      Je peux notamment apporter une expérience concrète sur {relevant_project}, avec {relevant_tech}.
+
+      Je serais ravi d'échanger pour vous présenter mon parcours plus en détail. Je vous joins mon CV.
+
+  without_offer:
+    name: "Entreprise sans offre mais pertinente"
+    subject: "Candidature spontanée – Alternance développement / IA – Aymen CHAGHOUB"
+    body: |
+      Bonjour {greeting},
+
+      Je me permets de vous contacter car le profil technique de {company_name} correspond à mes compétences et à mes aspirations.
+
+      Je suis actuellement en stage chez Ouidou Nord, où je contribue au développement d'une plateforme SaaS multi-tenant en production. Je recherche une alternance de 24 mois à partir de septembre 2026, idéalement sur des missions mêlant développement logiciel, backend, automatisation, IA ou systèmes intelligents.
+
+      Votre contexte m'intéresse particulièrement car {personalization_angle}.
+
+      Même si vous n'avez pas d'offre publiée actuellement, je serais ravi d'échanger si une opportunité peut se dessiner. Je vous joins mon CV.
+
+  followup_7d:
+    name: "Relance après 7 jours"
+    subject: "Relance – Candidature alternance – Aymen CHAGHOUB"
+    body: |
+      Bonjour {greeting},
+
+      Je me permets de revenir vers vous suite à ma candidature envoyée il y a une semaine pour une alternance en développement logiciel / IA chez {company_name}.
+
+      Je reste très intéressé par la possibilité de contribuer à vos projets et serais disponible pour un échange à votre convenance.
+
+      N'hésitez pas à me contacter si vous souhaitez en discuter.
+
+  followup_14d:
+    name: "Relance après 14 jours"
+    subject: "Relance – Candidature alternance – Aymen CHAGHOUB"
+    body: |
+      Bonjour {greeting},
+
+      Je me permets de vous relancer une dernière fois concernant ma candidature pour une alternance chez {company_name}, envoyée il y a deux semaines.
+
+      Si mon profil ne correspond pas à vos besoins actuels, je comprendrai parfaitement. Dans le cas contraire, je reste disponible pour un échange.
+
+      Je vous souhaite une bonne continuation.
+
+  interne_ouidou:
+    name: "Test Interne Ouidou"
+    subject: "Alternance développement logiciel / IA – poursuite chez Ouidou"
+    body: |
+      Bonjour l'équipe Ouidou,
+
+      Je me permets de vous contacter dans le cadre de ma recherche d'alternance pour septembre 2026. Comme j'effectue actuellement mon stage chez Ouidou Nord, à Euratechnologies, je souhaitais aussi tester la possibilité de poursuivre l'aventure en interne si une opportunité correspond à mon profil.
+
+      Mon stage actuel me permet de contribuer au développement d'une plateforme SaaS multi-tenant en production, avec une stack React.js, Java Spring Boot, PostgreSQL et GitLab CI/CD. Cette expérience me conforte dans mon envie de continuer sur des missions de développement logiciel, backend/fullstack, automatisation, IA appliquée ou systèmes intelligents.
+
+      Je serais ravi d'échanger si un besoin actuel ou à venir peut correspondre à mon profil d'alternance.

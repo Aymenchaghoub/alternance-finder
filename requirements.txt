@@ -1,0 +1,8 @@
+# alternance-finder — Dépendances Python
+pandas
+pyyaml
+python-dotenv
+requests
+beautifulsoup4
+pytest
+pydantic

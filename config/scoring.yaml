@@ -1,0 +1,207 @@
+---
+# ============================================================
+# alternance-finder — Règles de scoring
+# ============================================================
+
+# Bonus
+rules:
+  # Offres et contrats
+  - name: "alternance_offer"
+    description: "Offre d'alternance tech active détectée"
+    field: "has_apprenticeship_offer"
+    condition: "equals"
+    value: true
+    points: 30
+
+  # Localisation
+  - name: "location_paris_idf"
+    description: "Entreprise à Paris ou Île-de-France"
+    field: "location"
+    condition: "contains_any"
+    value:
+      - "Paris"
+      - "Île-de-France"
+      - "Ile-de-France"
+      - "IDF"
+      - "92"
+      - "93"
+      - "94"
+      - "95"
+      - "78"
+      - "91"
+      - "77"
+    points: 25
+
+  - name: "location_hdf"
+    description: "Entreprise dans les Hauts-de-France"
+    field: "location"
+    condition: "contains_any"
+    value:
+      - "Lille"
+      - "Hauts-de-France"
+      - "Nord"
+      - "59"
+    points: 20
+
+  # Stack technique
+  - name: "tech_stack_match"
+    description: "Stack technique correspondant au profil"
+    field: "tech_stack"
+    condition: "keywords_match"
+    value: "strong_keywords"
+    points: 20
+
+  # Type de poste
+  - name: "relevant_job_type"
+    description: "Recrute en dev, backend, fullstack, IA, ML ou data"
+    field: "job_titles_found"
+    condition: "contains_any"
+    value:
+      - "développeur"
+      - "developer"
+      - "backend"
+      - "fullstack"
+      - "full-stack"
+      - "IA"
+      - "AI"
+      - "machine learning"
+      - "data"
+      - "ingénieur logiciel"
+      - "software engineer"
+    points: 20
+
+  # Secteur
+  - name: "priority_sector"
+    description: "Secteur prioritaire (IA, SaaS, cyber, devtools, etc.)"
+    field: "sector"
+    condition: "contains_any"
+    value:
+      - "IA"
+      - "AI"
+      - "SaaS"
+      - "cybersécurité"
+      - "devtools"
+      - "healthtech"
+      - "fintech"
+      - "greentech"
+      - "edtech"
+      - "legaltech"
+    points: 15
+
+  # Taille
+  - name: "ideal_size"
+    description: "Taille entre 10 et 500 personnes"
+    field: "company_size"
+    condition: "between"
+    value: [10, 500]
+    points: 10
+
+  # Signaux positifs
+  - name: "career_page"
+    description: "Page carrière détectée"
+    field: "career_url"
+    condition: "not_empty"
+    points: 10
+
+  - name: "professional_contact"
+    description: "Email professionnel RH/recrutement/contact détecté"
+    field: "contact_email"
+    condition: "not_empty"
+    points: 10
+
+  - name: "tech_culture"
+    description: "Culture tech claire (blog tech, open source, etc.)"
+    field: "notes"
+    condition: "contains_any"
+    value:
+      - "tech blog"
+      - "open source"
+      - "github"
+      - "meetup"
+      - "hackathon"
+    points: 8
+
+  - name: "startup_network"
+    description: "Incubateur ou réseau startup pertinent"
+    field: "notes"
+    condition: "contains_any"
+    value:
+      - "incubateur"
+      - "Station F"
+      - "Euratechnologies"
+      - "La French Tech"
+      - "BPI"
+    points: 8
+
+  # Mots-clés forts (+5 par mot-clé)
+  - name: "strong_keyword_match"
+    description: "Mot-clé fort détecté dans les données"
+    field: "keywords_found"
+    condition: "count_keywords"
+    value: "strong_keywords"
+    points_per_match: 5
+    max_points: 25
+
+# Malus
+penalties:
+  - name: "too_far"
+    description: "Localisation trop éloignée"
+    field: "location"
+    condition: "not_contains_any"
+    value:
+      - "Paris"
+      - "Île-de-France"
+      - "Ile-de-France"
+      - "Lille"
+      - "Hauts-de-France"
+      - "Nord"
+      - "Remote"
+      - "Télétravail"
+    points: -10
+
+  - name: "no_tech"
+    description: "Aucune activité tech claire"
+    field: "has_tech_jobs"
+    condition: "equals"
+    value: false
+    points: -15
+
+  - name: "senior_only"
+    description: "Uniquement des postes senior CDI"
+    field: "job_titles_found"
+    condition: "contains_all"
+    value:
+      - "senior"
+      - "CDI"
+    points: -20
+
+  - name: "no_contact"
+    description: "Aucun contact ni page carrière"
+    field: "contact_email"
+    condition: "empty_and"
+    other_field: "career_url"
+    points: -25
+
+  - name: "uncertain_data"
+    description: "Données trop incertaines"
+    field: "notes"
+    condition: "contains"
+    value: "données incertaines"
+    points: -30
+
+  - name: "do_not_contact"
+    description: "Entreprise marquée do_not_contact"
+    field: "do_not_contact"
+    condition: "equals"
+    value: true
+    points: -100
+
+# Seuils de priorité
+thresholds:
+  high_priority: 80      # CV ciblé recommandé
+  good_target: 60        # Email personnalisé
+  backup: 45             # Backup
+  do_not_contact: 45     # En dessous : ne pas contacter
+
+# Export
+export_min_score: 60     # Score minimum pour top_targets.csv

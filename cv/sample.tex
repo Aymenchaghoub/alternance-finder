@@ -1,0 +1,225 @@
+\documentclass[9.5pt,a4paper]{article}
+
+% ===================== PACKAGES =====================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[left=1.35cm,right=1.35cm,top=0.95cm,bottom=0.95cm]{geometry}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{ifthen}
+
+% ===================== COULEURS =====================
+\definecolor{primary}{RGB}{18, 38, 80}
+\definecolor{accent}{RGB}{14, 130, 180}
+\definecolor{textgray}{RGB}{80, 80, 90}
+\colorlet{ACCENT}{accent}
+
+\hypersetup{colorlinks=true, urlcolor=accent, linkcolor=accent, pdfborder={0 0 0}}
+\pagestyle{empty}
+
+% ===================== SECTIONS =====================
+\titleformat{\section}
+  {\small\bfseries\color{primary}\MakeUppercase}
+  {}{0em}{}[{\color{ACCENT}\vspace{-3pt}\rule{\linewidth}{0.8pt}\vspace{1pt}}]
+\titlespacing*{\section}{0pt}{0.22cm}{0.07cm}
+
+% ===================== MACROS =====================
+\newcommand{\cvevent}[4]{%
+  \noindent{\small\textbf{#1}}\hfill{\small\color{accent}\textbf{#2}}\\[-1.4mm]
+  \noindent{\footnotesize\color{textgray}\textit{#3}}\hfill{\footnotesize\color{textgray}#4}\\[0.4mm]
+}
+
+\setlist[itemize]{
+  leftmargin=1.2em, nosep, topsep=1pt,
+  parsep=0pt, itemsep=1pt,
+  label={\color{accent}\scriptsize$\triangleright$}
+}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+% ===================== HEADER =====================
+\noindent
+\begin{minipage}[c]{0.76\linewidth}
+  {\large\bfseries\color{primary} Aymen CHAGHOUB}\\[0.13cm]
+  {\footnotesize\color{textgray}
+    Développeur Full-Stack \textbf{|}
+    Master Informatique --- Apprentissage 24 mois \textbf{|}
+    Disponible sept.\ 2026
+  }\\[0.10cm]
+  {\footnotesize
+    \href{mailto:ensm.chaghoub.aymen@gmail.com}{ensm.chaghoub.aymen@gmail.com}
+    ~\textbullet~
+    +33\,7\,58\,26\,37\,06
+    ~\textbullet~
+    Lille / Île-de-France
+    ~\textbullet~
+    Permis B
+  }\\[0.06cm]
+  {\footnotesize
+    \href{https://www.linkedin.com/in/aymen-chaghoub/}{linkedin.com/in/aymen-chaghoub}
+    ~\textbullet~
+    \href{https://github.com/Aymenchaghoub}{github.com/Aymenchaghoub}
+    ~\textbullet~
+    \textcolor{primary}{\textbf{Anglais C1}}
+  }
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.19\linewidth}
+  \centering
+  \begin{tikzpicture}
+    \draw[accent, line width=1.5pt] (0,0) circle (1.22cm);
+    \clip (0,0) circle (1.20cm);
+    \IfFileExists{profile-pic.JPG}{%
+      \node at (0,0) {%
+        \includegraphics[width=2.45cm,height=2.45cm,keepaspectratio]{profile-pic.JPG}%
+      };
+    }{%
+      \node[align=center, text=primary] at (0,0) {\small Aymen\\[-1mm]\small CHAGHOUB};
+    }
+  \end{tikzpicture}
+\end{minipage}
+
+\vspace{0.09cm}
+{\color{accent}\rule{\linewidth}{1pt}}
+\vspace{0.02cm}
+
+% ===================== PROFIL =====================
+\section{Profil}
+
+{\footnotesize
+  Étudiant en \textbf{Licence Informatique à l'Université de Lille}, issu de \textbf{CPGE Maths \& Informatique},
+  actuellement en stage chez \textbf{Ouidou Nord} en développement Full-Stack.
+  Admis en plusieurs \textbf{Masters Informatique en alternance}
+  (développement logiciel, IA, systèmes intelligents, traitement de données)
+  et à la recherche d'un \textbf{contrat d'apprentissage de 24 mois} dès \textbf{septembre 2026}.
+  Autonome, impliqué et à l'aise dans les environnements Agile ; j'aime autant
+  construire des fonctionnalités robustes que m'aventurer du côté de l'IA et du machine learning.
+  \textbf{Anglais C1} opérationnel.
+}
+
+% ===================== EXPÉRIENCE =====================
+\section{Expérience Professionnelle}
+
+\cvevent{Développeur Full-Stack --- Stage 12 semaines}{Avr. -- Juil. 2026}%
+{Ouidou Nord --- Euratechnologies}{Lille, France}
+\begin{itemize}
+  \item {\footnotesize Développement de fonctionnalités front-end et back-end
+        sur une plateforme \textbf{SaaS multi-tenant} :
+        intégration de maquettes \textbf{Figma} sous \textbf{React.js},
+        développement et maintenance d'API \textbf{REST} (\textbf{Java Spring Boot}, \textbf{PostgreSQL}),
+        gestion des accès multi-rôles (\textbf{RBAC}).}
+  \item {\footnotesize Participation active au cycle \textbf{Agile/Scrum} :
+        pipeline \textbf{GitLab CI/CD}, tests de non-régression, revues de code
+        et rédaction de documents de conception technique pour chaque évolution livrée.}
+\end{itemize}
+
+% ===================== PROJETS =====================
+\section{Projets Techniques}
+
+\noindent{\small\textbf{%
+  \href{https://github.com/Aymenchaghoub/MediBrief}{%
+    MediBrief --- Plateforme SaaS IA Multi-Tenant}}}%
+\hfill{\footnotesize\color{accent}\textit{2026}}
+\begin{itemize}
+  \item {\footnotesize Architecture \textbf{multi-tenant} from scratch :
+        isolation des données par organisation, gestion des rôles, pipeline \textbf{LLM}
+        (OpenAI API, \textbf{prompt engineering}, streaming \textbf{SSE}),
+        files asynchrones \textbf{BullMQ/Redis}, suivi de métriques (latence, débit, coût).}
+  \item {\footnotesize Déploiement via \textbf{CI/CD} (GitHub Actions + \textbf{Docker}) ---
+        Stack : \textbf{Node.js/TypeScript}, Next.js, PostgreSQL, Prisma, Redis.}
+\end{itemize}
+
+\vspace{0.07cm}
+
+\noindent{\small\textbf{%
+  \href{https://github.com/Aymenchaghoub}{%
+    Assistant RAG --- Recherche Sémantique sur ArXiv}}}%
+\hfill{\footnotesize\color{accent}\textit{2025}}
+\begin{itemize}
+  \item {\footnotesize Pipeline \textbf{RAG} complet : ingestion, embeddings, stockage vectoriel
+        (\textbf{ChromaDB}), inférence \textbf{LLM} (\textbf{Mistral-7B} via \textbf{LangChain}),
+        interface \textbf{Streamlit} et API \textbf{FastAPI}.
+        Évaluation quantitative avec \textbf{RAGAS} (fidélité, pertinence, rappel).}
+\end{itemize}
+
+\vspace{0.07cm}
+
+\noindent{\small\textbf{Classification d'Images --- CNN sur FashionMNIST}}%
+\hfill{\footnotesize\color{accent}\textit{2025}}
+\begin{itemize}
+  \item {\footnotesize Entraînement d'un réseau convolutionnel (\textbf{PyTorch}) :
+        préparation des données, comparaison d'hyperparamètres,
+        analyse des erreurs et saliency maps, évaluation (accuracy, F1-score).}
+\end{itemize}
+
+\vspace{0.07cm}
+
+\noindent{\small\textbf{%
+  \href{https://github.com/Aymenchaghoub/school-record-manager}{%
+    SchoolSphere --- Application Web Full-Stack Multi-Rôles}}}%
+\hfill{\footnotesize\color{accent}\textit{2025}}
+\begin{itemize}
+  \item {\footnotesize Application \textbf{MVC multi-rôles} développée from scratch :
+        front-end dynamique, \textbf{API REST} sécurisée (\textbf{<200\,ms}, 500+ utilisateurs),
+        gestion des droits d'accès \textbf{RBAC}, déployée sur \textbf{VPS Linux} en production.}
+  \item {\footnotesize Stack : \textbf{Laravel} (PHP), \textbf{MySQL}, Tailwind CSS, Git ---
+        tests unitaires, revues de code, livraison itérative sur plusieurs sprints Agile.}
+\end{itemize}
+
+% ===================== COMPÉTENCES =====================
+\section{Compétences Techniques}
+
+\noindent
+\begin{tabular}{@{}p{2.55cm}@{\hspace{0.15cm}}p{6.5cm}@{\hspace{0.2cm}}%
+                   p{2.55cm}@{\hspace{0.15cm}}p{4.45cm}}
+\footnotesize\textbf{Langages}
+  & \footnotesize \textbf{Python}, Java, JavaScript/TypeScript, SQL, PHP, C, Bash
+  & \footnotesize\textbf{Back-End}
+  & \footnotesize \textbf{Spring Boot}, FastAPI, Flask, Node.js, Laravel \\[1.5pt]
+
+\footnotesize\textbf{IA / ML}
+  & \footnotesize PyTorch, Scikit-learn, Pandas, NumPy, NLP, embeddings,
+    bases vectorielles
+  & \footnotesize\textbf{LLM / GenAI}
+  & \footnotesize OpenAI API, \textbf{RAG}, LangChain, Prompt Engineering \\[1.5pt]
+
+\footnotesize\textbf{Bases de données}
+  & \footnotesize \textbf{PostgreSQL}, MySQL, Redis, Prisma ORM, SQL avancé
+  & \footnotesize\textbf{Front-End}
+  & \footnotesize \textbf{React.js}, Next.js, Angular, Tailwind CSS \\[1.5pt]
+
+\footnotesize\textbf{DevOps}
+  & \footnotesize \textbf{Docker}, \textbf{GitLab CI/CD}, GitHub Actions,
+    Git, Linux, Bash
+  & \footnotesize\textbf{Méthodes}
+  & \footnotesize Agile/Scrum, API REST, RBAC, tests, revues de code \\[1.5pt]
+
+\footnotesize\textbf{Langues}
+  & \footnotesize \textbf{Anglais C1} \textbullet\ Français C1 \textbullet\ Arabe
+  & &  \\
+\end{tabular}
+
+% ===================== FORMATION =====================
+\section{Formation}
+
+\cvevent{Licence Informatique --- \textit{Admis en Master Informatique en alternance}}{2025 -- 2026}%
+{Université de Lille}{Lille, France}
+\begin{itemize}
+  \item {\footnotesize IA \& Machine Learning, bases de données avancées,
+        programmation fonctionnelle, systèmes, réseaux, génie logiciel.}
+\end{itemize}
+\cvevent{Licence Informatique --- Diplômé}{2023 -- 2025}%
+{Université Ferhat Abbas Sétif 1}{Sétif, Algérie}
+\cvevent{Classe Préparatoire Maths \& Informatique --- CPGE}{2021 -- 2023}%
+{École Nationale Supérieure de Mathématiques}{Alger, Algérie}
+
+
+\end{document}

@@ -1,7 +1,22 @@
+# ===========================
+# alternance-finder .gitignore
+# ===========================
+
 # Environnement virtuel
 .venv/
+.venv-1/
 
-# Fichiers générés par les scripts
+# Données et sorties (générées localement)
+legacy/data/
+data/raw/
+data/processed/
+data/exports/
+outputs/
+
+# CV générés
+cv/generated/
+
+# Fichiers legacy de données (au cas où copiés à la racine)
 emails.txt
 entreprises_emails.txt
 toutes_entreprises.txt
@@ -20,3 +35,25 @@ credentials.json
 # Python
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# LaTeX temporaires
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

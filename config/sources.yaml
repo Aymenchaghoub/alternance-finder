@@ -1,0 +1,50 @@
+---
+# ============================================================
+# alternance-finder — Sources de données
+# ============================================================
+
+sources:
+  # V1 — Actif
+  manual_csv:
+    enabled: true
+    description: "Import CSV manuel depuis data/manual_imports/"
+    directory: "data/manual_imports"
+
+  # TODO — APIs à intégrer
+  france_travail:
+    enabled: false
+    description: "API France Travail (ex-Pôle Emploi)"
+    base_url: "https://api.francetravail.io/partenaire/offresdemploi/v2"
+    auth_url: "https://entreprise.francetravail.fr/connexion/oauth2/access_token"
+    requires:
+      - "FRANCE_TRAVAIL_CLIENT_ID"
+      - "FRANCE_TRAVAIL_CLIENT_SECRET"
+    notes: "Inscription sur https://francetravail.io/data/api"
+
+  la_bonne_alternance:
+    enabled: false
+    description: "API La Bonne Alternance (DINUM)"
+    base_url: "https://labonnealternance.apprentissage.beta.gouv.fr/api"
+    requires: []
+    notes: "API publique, pas de clé requise"
+
+  sirene:
+    enabled: false
+    description: "API Sirene INSEE"
+    base_url: "https://api.insee.fr/entreprises/sirene/V3.11"
+    requires:
+      - "SIRENE_API_KEY"
+    notes: "Inscription sur https://api.insee.fr/"
+
+  startup_sources:
+    enabled: false
+    description: "Sources startup (Station F, French Tech, etc.)"
+    urls:
+      - "https://stationf.co/startups"
+      - "https://www.lafrenchtech.com/"
+    notes: "Scraping — à implémenter avec prudence (RGPD)"
+
+  website_email_finder:
+    enabled: false
+    description: "Extraction email depuis sites web d'entreprises"
+    notes: "Réutilise la logique de l'ancien find-missing-emails.py dans legacy/"

@@ -1,0 +1,80 @@
+---
+# ============================================================
+# alternance-finder — Mots-clés de matching
+# ============================================================
+
+# Mots-clés forts pour le scoring (+5 par match)
+strong_keywords:
+  - "Python"
+  - "FastAPI"
+  - "LLM"
+  - "RAG"
+  - "LangChain"
+  - "OpenAI"
+  - "backend"
+  - "API REST"
+  - "PostgreSQL"
+  - "Docker"
+  - "CI/CD"
+  - "machine learning"
+  - "NLP"
+  - "embeddings"
+  - "automatisation"
+  - "SaaS"
+  - "multi-tenant"
+
+# Mots-clés secondaires
+secondary_keywords:
+  - "Java"
+  - "Spring Boot"
+  - "React"
+  - "Next.js"
+  - "TypeScript"
+  - "Node.js"
+  - "deep learning"
+  - "data science"
+  - "intelligence artificielle"
+  - "fullstack"
+  - "full-stack"
+  - "devops"
+  - "kubernetes"
+  - "Redis"
+  - "MongoDB"
+  - "GraphQL"
+  - "microservices"
+
+# Domaines / rôles recherchés
+target_roles:
+  - "développeur"
+  - "developer"
+  - "ingénieur logiciel"
+  - "software engineer"
+  - "backend"
+  - "fullstack"
+  - "full-stack"
+  - "data engineer"
+  - "data scientist"
+  - "machine learning engineer"
+  - "IA"
+  - "AI"
+  - "alternance"
+  - "apprentissage"
+
+# Types de contrat recherchés
+contract_types:
+  - "alternance"
+  - "apprentissage"
+  - "contrat pro"
+  - "contrat d'apprentissage"
+
+# Secteurs prioritaires
+priority_sectors:
+  - "IA"
+  - "SaaS"
+  - "cybersécurité"
+  - "devtools"
+  - "healthtech"
+  - "fintech"
+  - "greentech"
+  - "edtech"
+  - "legaltech"

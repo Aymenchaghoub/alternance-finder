@@ -1,0 +1,218 @@
+---
+# ============================================================
+# alternance-finder — Profil candidat
+# ============================================================
+
+name: "Aymen CHAGHOUB"
+target_role: "Alternance Développement logiciel / IA / Systèmes intelligents"
+location: "Lille (actuellement)"
+mobility: "Paris / Île-de-France — ouvert Hauts-de-France"
+availability: "Septembre 2026"
+contract_type: "Apprentissage 24 mois"
+profile_image: "cv/profile-pic.JPG"
+
+contact:
+  email: "ensm.chaghoub.aymen@gmail.com"
+  phone: "+33 7 58 26 37 06"
+  linkedin: "https://www.linkedin.com/in/aymen-chaghoub/"
+  github: "https://github.com/Aymenchaghoub"
+  portfolio: "À compléter"
+
+current_internship:
+  company: "Ouidou Nord"
+  location: "Euratechnologies, Lille"
+  period: "Avril – Juillet 2026"
+  context: >
+    Développement sur une plateforme SaaS multi-tenant, Portail CVE,
+    pour le compte du PATCP, 50 théâtres, projet en production active.
+  missions:
+    - "Développement front-end React.js"
+    - "Intégration de maquettes Figma"
+    - "Développement et maintenance d'API REST Java Spring Boot"
+    - "PostgreSQL"
+    - "RBAC multi-tenant"
+    - "Amélioration de pipelines de traitement et contrôle de cohérence"
+    - "GitLab CI/CD"
+    - "Tests, revues de code, documentation technique"
+  technologies:
+    - "React.js"
+    - "Java Spring Boot"
+    - "PostgreSQL"
+    - "GitLab CI/CD"
+    - "Figma"
+    - "Agile/Scrum"
+
+admissions:
+  - "Data & IA — Institut Catholique de Lille"
+  - "IA et Data Computing — INSA Hauts-de-France"
+  - "Web et Science de Données — Université du Littoral Côte d'Opale"
+  - "Ingénierie en Intelligence Artificielle — Université Paris 8"
+  - "MIAGE / Systèmes intelligents — Université Paris Nanterre"
+  - "Valorisation et protection des données — Université Paris Cité"
+  - "Traitement de l'information et exploitation des données — CNAM"
+
+target_domains:
+  - "développement logiciel"
+  - "backend"
+  - "fullstack"
+  - "Python"
+  - "automatisation"
+  - "IA"
+  - "machine learning"
+  - "systèmes intelligents"
+  - "exploitation intelligente de données"
+  - "LLM / GenAI"
+  - "RAG"
+  - "outils internes / devtools"
+
+skills:
+  languages:
+    - "Python"
+    - "Java"
+    - "JavaScript"
+    - "TypeScript"
+    - "SQL"
+    - "PHP"
+    - "C"
+    - "Bash"
+  backend:
+    - "FastAPI"
+    - "Flask"
+    - "Node.js"
+    - "Java Spring Boot"
+    - "Laravel"
+  frontend:
+    - "React.js"
+    - "Next.js"
+    - "Angular"
+    - "Tailwind CSS"
+    - "HTML/CSS"
+    - "Streamlit"
+  ai_ml:
+    - "PyTorch"
+    - "Scikit-learn"
+    - "Pandas"
+    - "NumPy"
+    - "LangChain"
+    - "OpenAI API"
+    - "Mistral-7B"
+    - "HuggingFace Transformers"
+    - "ChromaDB"
+    - "RAGAS"
+    - "embeddings"
+    - "RAG"
+    - "NLP"
+    - "prompt engineering"
+  databases:
+    - "PostgreSQL"
+    - "MySQL"
+    - "Redis"
+    - "ChromaDB"
+    - "Prisma ORM"
+  devops:
+    - "Git"
+    - "GitHub"
+    - "GitLab"
+    - "Docker"
+    - "GitHub Actions"
+    - "GitLab CI/CD"
+    - "Postman"
+    - "VS Code"
+    - "Jupyter Notebook"
+    - "Figma"
+  methods:
+    - "Agile/Scrum"
+    - "API REST"
+    - "SaaS multi-tenant"
+    - "RBAC"
+    - "MVC"
+    - "tests unitaires"
+    - "revues de code"
+    - "CI/CD"
+
+projects:
+  - name: "MediBrief"
+    description: "SaaS IA multi-tenant"
+    stack:
+      - "Node.js"
+      - "TypeScript"
+      - "Next.js"
+      - "PostgreSQL"
+      - "Prisma"
+      - "Redis"
+      - "BullMQ"
+      - "OpenAI API"
+      - "Docker"
+      - "GitHub Actions"
+    keywords:
+      - "SaaS"
+      - "multi-tenant"
+      - "RBAC"
+      - "LLM"
+      - "OpenAI API"
+      - "streaming SSE"
+      - "Redis"
+      - "CI/CD"
+
+  - name: "Assistant RAG ArXiv"
+    description: "Pipeline RAG sur articles ArXiv"
+    stack:
+      - "Python"
+      - "LangChain"
+      - "ChromaDB"
+      - "HuggingFace"
+      - "Mistral-7B"
+      - "FastAPI"
+      - "Streamlit"
+      - "RAGAS"
+    keywords:
+      - "RAG"
+      - "LLM"
+      - "embeddings"
+      - "FastAPI"
+      - "recherche sémantique"
+      - "NLP"
+
+  - name: "CNN FashionMNIST"
+    description: "Projet ML / deep learning"
+    stack:
+      - "Python"
+      - "PyTorch"
+      - "Matplotlib"
+      - "Pandas"
+      - "NumPy"
+    keywords:
+      - "CNN"
+      - "deep learning"
+      - "classification"
+      - "saliency maps"
+      - "F1-score"
+
+  - name: "SchoolSphere"
+    description: "Application web MVC multi-rôles"
+    stack:
+      - "Laravel"
+      - "MySQL"
+      - "Tailwind CSS"
+      - "JavaScript"
+      - "Git"
+    keywords:
+      - "fullstack"
+      - "RBAC"
+      - "API REST"
+      - "VPS Linux"
+      - "MVC"
+
+  - name: "Pipeline de recherche de stage"
+    description: "Ancien outil Python utilisé pour trouver mon stage"
+    stack:
+      - "Python"
+      - "Requests"
+      - "BeautifulSoup"
+    keywords:
+      - "automatisation"
+      - "parsing"
+      - "logs"
+      - "CSV"
+      - "résilience"
+      - "scraping"
